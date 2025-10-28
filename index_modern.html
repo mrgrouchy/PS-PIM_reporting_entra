@@ -1,0 +1,1535 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>PIM Activations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #0b1220;
+            --elev: #0f172a;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #60a5fa;
+            --accent-2: #22d3ee;
+            --ok: #22c55e;
+            --bad: #ef4444;
+            --warn: #f59e0b;
+            --chip-ok: #052e1e;
+            --chip-bad: #3a0a0a;
+            --chip-neu: #111827;
+            --line: #1f2937;
+            --ring: #334155;
+            --table-alt: #0b1220;
+            --shadow: 0 8px 24px rgba(0, 0, 0, .22), 0 2px 8px rgba(0, 0, 0, .24)
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f6f7fb;
+                --panel: #ffffff;
+                --card: #ffffff;
+                --elev: #ffffff;
+                --text: #0f172a;
+                --muted: #64748b;
+                --accent: #2563eb;
+                --accent-2: #0891b2;
+                --ok: #16a34a;
+                --bad: #dc2626;
+                --warn: #b45309;
+                --chip-ok: #dcfce7;
+                --chip-bad: #fee2e2;
+                --chip-neu: #f1f5f9;
+                --line: #e5e7eb;
+                --ring: #cbd5e1;
+                --table-alt: #fafafa;
+                --shadow: 0 10px 25px rgba(2, 8, 23, .06), 0 1px 2px rgba(2, 8, 23, .06)
+            }
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale
+        }
+
+        header,
+        main {
+            max-width: 1150px;
+            margin: auto;
+            padding: 16px
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: var(--panel);
+            backdrop-filter: none;
+            border-bottom: 1px solid var(--line)
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0;
+            letter-spacing: .2px
+        }
+
+        .btn {
+            background: linear-gradient(180deg, var(--accent), var(--accent-2));
+            color: #0b1220;
+            font-weight: 700;
+            letter-spacing: .2px;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: 9px 14px;
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .15) inset, var(--shadow);
+            transition: transform .06s ease, filter .15s ease, box-shadow .15s ease, background .2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .btn:hover {
+            filter: saturate(105%);
+            transform: translateY(-1px)
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(.99)
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            filter: grayscale(.2);
+            box-shadow: none
+        }
+
+        .btn--ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--ring);
+            box-shadow: none
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--ring);
+            box-shadow: none
+        }
+
+        .btn--soft {
+            background: color-mix(in oklab, var(--accent) 18%, transparent);
+            color: var(--text);
+            border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent)
+        }
+
+        .btn--icon {
+            padding: 8px 10px;
+            min-width: 38px;
+            justify-content: center
+        }
+
+        .btn--sm {
+            padding: 7px 10px;
+            font-size: 13px
+        }
+
+        .btn svg,
+        .btn .icon {
+            width: 16px;
+            height: 16px
+        }
+
+        .btnbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .btngroup {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid var(--ring);
+            border-radius: 999px;
+            overflow: hidden;
+            background: var(--panel);
+            box-shadow: var(--shadow)
+        }
+
+        .btngroup .btn {
+            background: transparent;
+            color: var(--text);
+            box-shadow: none;
+            border: 0;
+            border-radius: 0
+        }
+
+        .btngroup .btn+.btn {
+            border-left: 1px solid var(--line)
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spin .8s linear infinite
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .btn:hover {
+            filter: saturate(105%);
+            transform: translateY(-1px)
+        }
+
+        .btn:active {
+            transform: translateY(0) scale(.99)
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            filter: grayscale(.2);
+            box-shadow: none
+        }
+
+        .btn--ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--ring);
+            box-shadow: none
+        }
+
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            vertical-align: -2px
+        }
+
+        .btn .icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            vertical-align: -2px
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin: 12px 0
+        }
+
+        .filters input,
+        .filters select {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: var(--panel);
+            color: var(--text);
+            box-shadow: var(--shadow)
+        }
+
+        .filters input::placeholder {
+            color: var(--muted)
+        }
+
+        .filters input:focus,
+        .filters select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--ring)
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, .01));
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            transition: transform .18s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+            will-change: transform;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .28), 0 3px 12px rgba(0, 0, 0, .22);
+            border-color: color-mix(in oklab, var(--accent) 22%, var(--line));
+            background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02));
+        }
+
+        .card:focus-within {
+            transform: translateY(-1px);
+            box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 40%, transparent), var(--shadow);
+            border-color: color-mix(in oklab, var(--accent) 40%, var(--line));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card {
+                transition: none
+            }
+
+            .card:hover,
+            .card:focus-within {
+                transform: none
+            }
+        }
+
+        :root[data-contrast="high"] .card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #ffffff;
+            background: #000000;
+        }
+
+        canvas {
+            width: 100%;
+            height: 200px;
+            display: block;
+            border-radius: 12px;
+            cursor: crosshair
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            text-align: left;
+            padding: 10px 10px;
+            z-index: 1;
+            background: var(--panel);
+            backdrop-filter: none;
+            border-bottom: 1px solid var(--line);
+            font-weight: 700;
+            letter-spacing: .2px
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table-alt)
+        }
+
+        tbody tr:hover {
+            background: rgba(148, 163, 184, .08)
+        }
+
+        .chip {
+            padding: 2px 10px;
+            border-radius: 999px;
+            display: inline-block;
+            font-weight: 700
+        }
+
+        .ok {
+            background: var(--chip-ok);
+            color: var(--ok);
+            border: 1px solid color-mix(in oklab, var(--ok) 35%, transparent)
+        }
+
+        .bad {
+            background: var(--chip-bad);
+            color: var(--bad);
+            border: 1px solid color-mix(in oklab, var(--bad) 35%, transparent)
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .banner {
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin: 12px 0;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow)
+        }
+
+        .error {
+            background: color-mix(in oklab, var(--bad) 14%, transparent);
+            color: var(--text)
+        }
+
+        .info {
+            background: color-mix(in oklab, var(--warn) 10%, transparent);
+            color: var(--text)
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .footer {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 10px 0 6px;
+            text-align: center
+        }
+
+        .copyright {
+            color: var(--muted);
+            font-size: 12px;
+            text-align: right;
+            margin-top: 8px
+        }
+
+        a.upn-link {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 2px
+        }
+
+        a.upn-link:hover {
+            opacity: .9
+        }
+
+        .summary-title {
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: .2px
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow)
+        }
+
+        .summary-role {
+            text-align: left;
+            justify-self: start;
+            overflow-wrap: anywhere
+        }
+
+        .summary-count {
+            text-align: right;
+            justify-self: end;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800
+        }
+
+        .elig-wrap {
+            margin-top: 12px
+        }
+
+        .elig-title {
+            margin: 10px 0 6px 0;
+            font-weight: 800
+        }
+
+        .elig-list {
+            display: grid;
+            gap: 8px
+        }
+
+        .elig-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow)
+        }
+
+        .elig-badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: color-mix(in oklab, var(--accent) 16%, transparent);
+            color: var(--text);
+            font-weight: 700;
+            border: 1px solid var(--ring)
+        }
+
+        .perm-badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: color-mix(in oklab, var(--bad) 16%, transparent);
+            color: var(--text);
+            font-weight: 800;
+            border: 1px solid var(--ring)
+        }
+
+        .pim-badge {
+            font-size: 10px;
+            margin-left: 6px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: color-mix(in oklab, var(--accent-2) 24%, transparent);
+            color: var(--text);
+            font-weight: 800;
+            border: 1px solid var(--ring)
+        }
+
+        .pag-badge {
+            font-size: 10px;
+            margin-left: 6px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: color-mix(in oklab, var(--accent) 24%, transparent);
+            color: var(--text);
+            font-weight: 800;
+            border: 1px solid var(--ring)
+        }
+
+        .elig-dim {
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .elig-last {
+            font-size: 12px;
+            text-align: right;
+            white-space: nowrap
+        }
+
+        .x-badge {
+            display: inline-block;
+            font-weight: 800;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: var(--chip-bad);
+            color: var(--bad);
+            line-height: 22px;
+            border: 1px solid color-mix(in oklab, var(--bad) 35%, transparent)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .btn {
+                transition: none
+            }
+        }
+
+        @media (max-width:880px) {
+            .filters {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+        }
+
+        @media (max-width:560px) {
+            header {
+                gap: 8px
+            }
+
+            .filters {
+                grid-template-columns: 1fr
+            }
+
+            .grid2 {
+                grid-template-columns: 1fr
+            }
+
+            thead th {
+                font-size: 12px
+            }
+
+            tbody td {
+                font-size: 12px
+            }
+        }
+
+        /* High-contrast mode */
+        :root *:focus-visible {
+            outline: 3px solid var(--ring);
+            outline-offset: 2px
+        }
+
+        :root[data-contrast="high"] {
+            --bg: #000000;
+            --panel: #000000;
+            --card: #000000;
+            --elev: #000000;
+            --text: #ffffff;
+            --muted: #d1d5db;
+            --accent: #00e1ff;
+            --accent-2: #79ffa7;
+            --ok: #22ff7a;
+            --bad: #ff5b5b;
+            --warn: #ffd166;
+            --chip-ok: #001b0f;
+            --chip-bad: #240000;
+            --chip-neu: #0a0a0a;
+            --line: #ffffff;
+            --ring: #ffffff;
+            --table-alt: #0a0a0a;
+        }
+
+        :root[data-contrast="high"] .btn {
+            box-shadow: none;
+            border: 1px solid #ffffff
+        }
+
+        :root[data-contrast="high"] .btn--ghost {
+            border-color: #ffffff
+        }
+
+        :root[data-contrast="high"] thead th {
+            border-bottom: 2px solid #ffffff
+        }
+
+        :root[data-contrast="high"] .upn-link {
+            text-decoration-thickness: 2px
+        }
+
+        :root[data-contrast="high"] .card {
+            background: #000000
+        }
+
+        :root[data-contrast="high"] .chip {
+            border-width: 2px
+        }
+
+        :root[data-contrast="high"] .filters input,
+        :root[data-contrast="high"] .filters select {
+            border-color: #ffffff
+        }
+
+        /* Toggle switch (sun/moon) */
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 30px;
+        }
+
+        .toggle input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+        }
+
+        .toggle .slider {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: var(--panel);
+            border: 1px solid var(--ring);
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .toggle .slider::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--text);
+            transition: transform .2s ease;
+        }
+
+        .toggle .icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            opacity: .7
+        }
+
+        .toggle .sun {
+            left: 8px
+        }
+
+        .toggle .moon {
+            right: 8px
+        }
+
+        .toggle input:checked+.slider {
+            background: linear-gradient(180deg, var(--accent), var(--accent-2));
+            border-color: transparent
+        }
+
+        .toggle input:checked+.slider::after {
+            transform: translateX(24px);
+            background: #0b1220
+        }
+
+        /* Explicit theme overrides (manual toggle wins over system preference) */
+        :root[data-theme="light"] {
+            --bg: #f6f7fb;
+            --panel: #ffffff;
+            --card: #ffffff;
+            --elev: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --accent: #2563eb;
+            --accent-2: #0891b2;
+            --ok: #16a34a;
+            --bad: #dc2626;
+            --warn: #b45309;
+            --chip-ok: #dcfce7;
+            --chip-bad: #fee2e2;
+            --chip-neu: #f1f5f9;
+            --line: #e5e7eb;
+            --ring: #cbd5e1;
+            --table-alt: #fafafa;
+            --shadow: 0 10px 25px rgba(2, 8, 23, .06), 0 1px 2px rgba(2, 8, 23, .06)
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #0b1220;
+            --elev: #0f172a;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #60a5fa;
+            --accent-2: #22d3ee;
+            --ok: #22c55e;
+            --bad: #ef4444;
+            --warn: #f59e0b;
+            --chip-ok: #052e1e;
+            --chip-bad: #3a0a0a;
+            --chip-neu: #111827;
+            --line: #1f2937;
+            --ring: #334155;
+            --table-alt: #0b1220;
+            --shadow: 0 8px 24px rgba(0, 0, 0, .22), 0 2px 8px rgba(0, 0, 0, .24)
+        }
+
+        /* Tooltip for trend */
+        .trend-tip {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font: 12px ui-sans-serif, system-ui;
+            background: color-mix(in oklab, var(--panel) 86%, black 14%);
+            color: var(--text);
+            border: 1px solid var(--ring);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translate(-50%, -120%);
+            transition: opacity .12s ease
+        }
+
+        .trend-tip strong {
+            font-weight: 800
+        }
+
+        .trend-tip .muted {
+            color: var(--muted)
+        }
+
+        /* Theme tokens (map to existing palette so they auto-update per theme) */
+        :root {
+            --success-text: var(--ok);
+            --error-text: var(--bad);
+            --warning-text: var(--warn);
+        }
+
+        /* UPN copy UI */
+        .upn-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .iconbtn {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--ring);
+            border-radius: 8px;
+            padding: 4px;
+            line-height: 0;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .15s ease
+        }
+
+        td:hover .iconbtn {
+            opacity: 1
+        }
+
+        .iconbtn .icon {
+            width: 14px;
+            height: 14px;
+            margin: 0
+        }
+
+        /* Use theme tokens on chips */
+        .ok {
+            background: var(--chip-ok);
+            color: var(--success-text);
+            border: 1px solid color-mix(in oklab, var(--success-text) 35%, transparent)
+        }
+
+        .bad {
+            background: var(--chip-bad);
+            color: var(--error-text);
+            border: 1px solid color-mix(in oklab, var(--error-text) 35%, transparent)
+        }
+
+        /* Tooltip for copy UPN */
+        .iconbtn[data-tip] {
+            position: relative
+        }
+
+        .iconbtn[data-tip]::after {
+            content: attr(data-tip);
+            position: absolute;
+            z-index: 20;
+            white-space: nowrap;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            background: color-mix(in oklab, var(--panel) 86%, black 14%);
+            color: var(--text);
+            border: 1px solid var(--ring);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .12s ease;
+        }
+
+        .iconbtn[data-tip]::before {
+            /* little arrow */
+            content: "";
+            position: absolute;
+            z-index: 20;
+            width: 8px;
+            height: 8px;
+            transform: translateX(-50%) rotate(45deg);
+            bottom: calc(100% + 4px);
+            left: 50%;
+            background: color-mix(in oklab, var(--panel) 86%, black 14%);
+            border-left: 1px solid var(--ring);
+            border-top: 1px solid var(--ring);
+            opacity: 0;
+            transition: opacity .12s ease;
+        }
+
+        .iconbtn:hover::after,
+        .iconbtn:focus-visible::after,
+        .iconbtn:hover::before,
+        .iconbtn:focus-visible::before {
+            opacity: 1
+        }
+    </style>
+    <!-- Flatpickr & Toastify (CDN) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SheetJS (XLSX export) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>PIM Activations</h1>
+        <div class="btnbar">
+            <button id="resetBtn" class="btn btn--outline btn--sm" title="Clear all filters and reset the view"><i
+                    data-lucide="refresh-ccw" class="icon"></i><span>Reset</span></button>
+
+            <div class="btngroup" role="group" aria-label="Exports">
+                <button id="exportBtn" class="btn btn--sm" disabled title="Export current view as CSV"><i
+                        data-lucide="download" class="icon"></i><span>CSV</span></button>
+                <button id="exportXlsxBtn" class="btn btn--sm" disabled title="Export current view as Excel (.xlsx)"><i
+                        data-lucide="file-spreadsheet" class="icon"></i><span>XLSX</span></button>
+                <button id="exportUserSummaryBtn" class="btn btn--sm" disabled title="Export selected user's summary"><i
+                        data-lucide="file-text" class="icon"></i><span>User</span></button>
+            </div>
+
+            <button id="copyLinkBtn" class="btn btn--soft btn--sm" title="Copy a link to this filtered view"><i
+                    data-lucide="link-2" class="icon"></i><span>Copy link</span></button>
+
+            <label class="toggle" id="themeToggle" title="Toggle light / dark theme">
+                <input id="themeSwitch" type="checkbox" aria-label="Light/Dark theme" />
+                <span class="slider">
+                    <i data-lucide="sun" class="icon sun"></i>
+                    <i data-lucide="moon" class="icon moon"></i>
+                </span>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <div id="banner" class="banner info" style="display:none"></div>
+
+        <div class="filters">
+            <input id="q" placeholder="Search…">
+            <select id="role">
+                <option value="">All roles</option>
+            </select>
+            <select id="user">
+                <option value="">All users</option>
+            </select>
+            <select id="result">
+                <option value="">All results</option>
+                <option>success</option>
+                <option>failure</option>
+            </select>
+            <div class="grid2" style="grid-column: span 2;">
+                <input id="from" type="text" title="From date">
+                <input id="to" type="text" title="To date">
+            </div>
+        </div>
+
+        <div class="card" style="margin:12px 0">
+            <canvas id="trend"></canvas>
+        </div>
+
+        <div class="card" id="userSummaryCard">
+            <h3 class="summary-title">User Role Summary</h3>
+            <div id="userSummaryBody"></div>
+            <div id="userSummaryNote" class="muted" style="margin-top:6px;"></div>
+            <div class="elig-wrap">
+                <div class="elig-title" id="eligTitle">Eligible roles</div>
+                <div class="elig-dim" id="eligHint" style="margin-bottom:6px">
+                    Last activated = most recent completed PIM activation. ✖ = never activated.
+                    Standing access shows as <strong style="color:var(--bad)">Perm active</strong>.
+                </div>
+                <div id="eligibleRolesBody" class="elig-list"></div>
+                <div id="eligibleRolesNote" class="elig-dim"></div>
+            </div>
+        </div>
+
+        <div class="card" style="overflow:auto">
+            <table id="tbl">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>MemberUPN</th>
+                        <th>Member</th>
+                        <th>Role</th>
+                        <th>Justification</th>
+                        <th>Ticket</th>
+                        <th>Activity</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <td class="muted" colspan="8">Loading…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">This page auto-loads <code>PIM_Activations.data.js</code>,
+            <code>AdministratorsReport-PIM.data.js</code>, and <code>AdministratorsReport-PAG.data.js</code> generated
+            by your PowerShell.</div>
+        <div class="copyright">© <span id="year"></span> Andy Royston</div>
+    </main>
+
+    <script src="./PIM_Activations.data.js"></script>
+    <script src="./AdministratorsReport-PIM.data.js"></script>
+    <script src="./AdministratorsReport-PAG.data.js"></script>
+    <script>
+        (function () {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            const el = id => document.getElementById(id);
+            const resetBtn = el('resetBtn');
+            const exportBtn = el('exportBtn');
+            const exportXlsxBtn = el('exportXlsxBtn');
+            const exportUserSummaryBtn = el('exportUserSummaryBtn');
+            const copyLinkBtn = el('copyLinkBtn');
+            const banner = el('banner');
+            const q = el('q'), role = el('role'), user = el('user'), result = el('result'), from = el('from'), to = el('to');
+            const tbody = el('tbody');
+            const trendCanvas = el('trend');
+            const userSummaryCard = el('userSummaryCard');
+            const userSummaryBody = el('userSummaryBody');
+            const userSummaryNote = el('userSummaryNote');
+            const eligTitle = el('eligTitle');
+            const eligHint = el('eligHint');
+            const eligibleRolesBody = el('eligibleRolesBody');
+            const eligibleRolesNote = el('eligibleRolesNote');
+
+            // Theme toggle (light/dark) with sun/moon, persists in localStorage
+            function applyTheme(mode) {
+                if (mode !== 'light' && mode !== 'dark') return;
+                document.documentElement.setAttribute('data-theme', mode);
+                try { localStorage.setItem('theme', mode); } catch (_) { }
+                try { Toastify({ text: mode === 'dark' ? 'Dark mode' : 'Light mode', gravity: 'top', position: 'right', duration: 2200 }).showToast(); } catch (_) { }
+                const sw = document.getElementById('themeSwitch');
+                if (sw) sw.checked = (mode === 'dark');
+                try { drawTrend(filtered); } catch (_) { }
+            }
+            // Initial theme: saved -> system preference -> default light
+            let initialTheme = null;
+            try { initialTheme = localStorage.getItem('theme'); } catch (_) { }
+            if (!initialTheme) {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                initialTheme = prefersDark ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', initialTheme);
+            const themeSwitch = el('themeSwitch');
+            if (themeSwitch) {
+                themeSwitch.checked = (initialTheme === 'dark');
+                themeSwitch.addEventListener('change', () => {
+                    applyTheme(themeSwitch.checked ? 'dark' : 'light');
+                });
+            }
+
+            // Initialize Flatpickr on date inputs
+            if (window.flatpickr) {
+                flatpickr(from, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'D, J M Y', allowInput: true, onChange: applyFilters });
+                flatpickr(to, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'D, J M Y', allowInput: true, onChange: applyFilters });
+            }
+
+            // Render Lucide icons if available
+            if (window.lucide) { try { lucide.createIcons(); } catch (_) { } }
+
+            let rows = [];
+            let filtered = [];
+
+            function showInfo(msg) { try { Toastify({ text: String(msg), gravity: "top", position: "right", close: true, duration: 4000 }).showToast(); } catch (e) { banner.className = 'banner info'; banner.textContent = msg; banner.style.display = 'block'; } }
+            function hideBanner() { banner.style.display = 'none'; }
+            function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" })[c]); }
+
+            function normalize(arr) {
+                return (Array.isArray(arr) ? arr : []).map(r => ({
+                    Timestamp: r.Timestamp ?? r.timestamp ?? "",
+                    MemberUPN: r.MemberUPN ?? "",
+                    Member: r.Member ?? "",
+                    Role: r.Role ?? "",
+                    Justification: r.Justification ?? "",
+                    Ticket: r.Ticket ?? r.TicketNumber ?? "",
+                    Activity: r.Activity ?? "",
+                    Result: r.Result ?? ""
+                }));
+            }
+
+            function ensureOption(sel, val) {
+                const opts = Array.from(sel.options).map(o => o.value);
+                if (val && !opts.includes(val)) {
+                    const opt = document.createElement('option');
+                    opt.value = opt.textContent = val;
+                    sel.appendChild(opt);
+                }
+            }
+
+            function findDisplayName(upn) {
+                upn = (upn || '').toLowerCase();
+                const r = rows.find(x => (x.MemberUPN || '').toLowerCase() === upn);
+                return r ? (r.Member || '') : '';
+            }
+
+            function renderTable(data) {
+                tbody.innerHTML = '';
+                if (!data.length) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = '<td class="muted" colspan="8">No rows match your filters.</td>';
+                    tbody.appendChild(tr);
+                    return;
+                }
+                const frag = document.createDocumentFragment();
+                for (const r of data) {
+                    const tr = document.createElement('tr');
+                    const ts = r.Timestamp ? new Date(r.Timestamp) : null;
+                    const tsText = ts && !isNaN(ts) ? ts.toLocaleString() : '';
+                    const upn = r.MemberUPN || '';
+                    const upnHtml = upn ? `<span class="upn-wrap"><a href="#" class="upn-link" data-upn="${escapeHtml(upn)}">${escapeHtml(upn)}</a><button class=\"iconbtn copy-upn\" data-upn=\"${escapeHtml(upn)}\" title=\"Copy UPN\" data-tip=\"Copy UPN\" aria-label=\"Copy UPN\"><i data-lucide="copy" class="icon"></i></button></span>` : '';
+                    tr.innerHTML = `
+        <td>${escapeHtml(tsText)}</td>
+        <td>${upnHtml}</td>
+        <td>${escapeHtml(r.Member || '')}</td>
+        <td>${escapeHtml(r.Role || '')}</td>
+        <td>${escapeHtml(r.Justification || '')}</td>
+        <td>${escapeHtml(r.Ticket || '')}</td>
+        <td>${escapeHtml(r.Activity || '')}</td>
+        <td><span class="chip ${r.Result === 'success' ? 'ok' : r.Result === 'failure' ? 'bad' : ''}">${escapeHtml(r.Result || '')}</span></td>
+      `;
+                    frag.appendChild(tr);
+                }
+                tbody.appendChild(frag);
+                // re-render icons for newly injected copy buttons
+                if (window.lucide) { try { lucide.createIcons(); } catch (_) { } }
+            }
+
+            // click on MemberUPN -> set user filter + scroll to summary (and copy on hover button)
+            tbody.addEventListener('click', (e) => {
+                const copyBtn = e.target.closest('.copy-upn');
+                if (copyBtn) {
+                    e.preventDefault(); e.stopPropagation();
+                    const val = copyBtn.dataset.upn || '';
+                    const doCopy = (navigator.clipboard && window.isSecureContext)
+                        ? navigator.clipboard.writeText(val)
+                        : (function () { const ta = document.createElement('textarea'); ta.value = val; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } finally { document.body.removeChild(ta); } return Promise.resolve(); })();
+                    Promise.resolve(doCopy).then(() => { try { Toastify({ text: `Copied: ${val}`, gravity: 'top', position: 'right', duration: 1800 }).showToast(); } catch (_) { showInfo(`Copied: ${val}`); } });
+                    return;
+                }
+                const a = e.target.closest('.upn-link');
+                if (!a) return;
+                e.preventDefault();
+                const upn = a.dataset.upn || '';
+                if (!upn) return;
+                ensureOption(user, upn);
+                user.value = upn;
+                applyFilters();
+                userSummaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            function getPAGArray() {
+                const raw = window.PAG_REPORT;
+                if (!raw) return [];
+                return Array.isArray(raw) ? raw : [raw];
+            }
+            function splitList(s) { if (!s) return []; return String(s).split(/[;,\s]+/).map(x => x.trim()).filter(Boolean); }
+
+            function getAllRoles() {
+                const set = new Set(rows.map(r => r.Role).filter(Boolean));
+                const report = Array.isArray(window.PIM_REPORT) ? window.PIM_REPORT : [];
+                for (const r of report) { const name = (r.AssignedRole || '').trim(); if (name) set.add(name); }
+                for (const p of getPAGArray()) { const name = (p.AssignedRole || '').trim(); if (name) set.add(name); }
+                return Array.from(set).sort();
+            }
+            function getAllUsers() {
+                const set = new Set(rows.map(r => r.MemberUPN).filter(Boolean));
+                const report = Array.isArray(window.PIM_REPORT) ? window.PIM_REPORT : [];
+                for (const r of report) { const upn = (r.Principal || '').trim(); if (upn) set.add(upn); }
+                for (const p of getPAGArray()) { splitList(p.EligibleGroupMembers).forEach(u => set.add(u)); splitList(p.ActiveGroupMembers).forEach(u => set.add(u)); }
+                return Array.from(set).sort();
+            }
+
+            function buildFacets() { fillSelect(role, getAllRoles(), 'All roles'); fillSelect(user, getAllUsers(), 'All users'); }
+            function fillSelect(sel, vals, firstLabel) { const value = sel.value; sel.innerHTML = `<option value="">${firstLabel}</option>` + vals.map(v => `<option>${escapeHtml(v)}</option>`).join(''); if (vals.includes(value)) sel.value = value; else sel.value = ''; }
+
+            function filterRows(ignoreRole = false) {
+                const needle = q.value.trim().toLowerCase();
+                const f = from.value ? new Date(from.value) : null;
+                const t = to.value ? new Date(to.value + 'T23:59:59.999') : null;
+                const upnSel = user.value;
+                const resSel = result.value;
+                const roleSel = role.value;
+
+                return rows.filter(r => {
+                    const ts = new Date(r.Timestamp);
+                    if (f && (!ts || ts < f)) return false;
+                    if (t && (!ts || ts > t)) return false;
+                    if (upnSel && r.MemberUPN !== upnSel) return false;
+                    if (resSel && r.Result !== resSel) return false;
+                    if (!ignoreRole && roleSel && r.Role !== roleSel) return false;
+                    if (needle && !Object.values(r).some(v => (v ?? '').toString().toLowerCase().includes(needle))) return false;
+                    return true;
+                }).sort((a, b) => new Date(b.Timestamp) - new Date(a.Timestamp));
+            }
+
+            function applyFilters() {
+                filtered = filterRows(false);
+                renderTable(filtered);
+                drawTrend(filtered);
+                renderUserSummary();
+                renderEligibleRoles();
+                exportBtn.disabled = filtered.length === 0;
+                exportXlsxBtn.disabled = filtered.length === 0;
+                exportUserSummaryBtn.disabled = !canExportUserSummary();
+            }
+
+            function isCompletedActivation(r) { const a = (r.Activity || '').toLowerCase(); return a === 'add member to role completed (pim activation)'; }
+            function getActivationCount(upn, roleName) { let n = 0; for (const r of rows) { if (r.MemberUPN?.toLowerCase() !== (upn || '').toLowerCase()) continue; if ((r.Role || '') !== roleName) continue; if (!isCompletedActivation(r)) continue; n++; } return n; }
+            function getLastActivationDate(upn, roleName) { let latest = null; for (const r of rows) { if (r.MemberUPN?.toLowerCase() !== (upn || '').toLowerCase()) continue; if ((r.Role || '') !== roleName) continue; if (!isCompletedActivation(r)) continue; const d = new Date(r.Timestamp); if (!isNaN(d)) latest = (!latest || d > latest) ? d : latest; } return latest; }
+
+            function renderUserSummary() {
+                userSummaryBody.innerHTML = '';
+                userSummaryNote.textContent = '';
+                const upn = user.value; const roleSel = role.value;
+                if (upn) {
+                    const base = filterRows(true);
+                    const subset = base.filter(r => r.MemberUPN === upn && isCompletedActivation(r));
+                    if (subset.length === 0) { userSummaryNote.textContent = `No completed activations for ${upn} in the current view.`; return; }
+                    const counts = new Map();
+                    for (const r of subset) { const rn = r.Role || '(Unknown role)'; counts.set(rn, (counts.get(rn) || 0) + 1); }
+                    const items = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]);
+                    for (const [rn, count] of items) { const row = document.createElement('div'); row.className = 'summary-row'; row.innerHTML = `<div class="summary-role">${escapeHtml(rn)}</div><div class="summary-count">${count}</div>`; userSummaryBody.appendChild(row); }
+                    userSummaryNote.textContent = `Completed activations for ${upn}: ${subset.length}`; return;
+                }
+                if (roleSel) {
+                    const report = Array.isArray(window.PIM_REPORT) ? window.PIM_REPORT : [];
+                    const eligUsers = Array.from(new Set(report.filter(r => (r.AssignmentType || '').toLowerCase().includes('eligible') && (r.AssignedRole || '') === roleSel).map(r => r.Principal).filter(Boolean))).sort();
+                    const neverActivated = eligUsers.filter(u => getActivationCount(u, roleSel) === 0);
+                    if (eligUsers.length === 0) { userSummaryNote.textContent = `No eligible users found for role "${roleSel}".`; return; }
+                    if (neverActivated.length === 0) { userSummaryNote.textContent = `All ${eligUsers.length} eligible user(s) for "${roleSel}" have activated at least once.`; return; }
+                    for (const upnNA of neverActivated) { const row = document.createElement('div'); row.className = 'summary-row'; row.innerHTML = `<div class="summary-role">${escapeHtml(upnNA)}</div><div class="summary-count"><span class="x-badge" title="Never activated">✖</span></div>`; userSummaryBody.appendChild(row); }
+                    userSummaryNote.textContent = `${neverActivated.length} of ${eligUsers.length} eligible user(s) have never activated "${roleSel}".`; return;
+                }
+                userSummaryNote.textContent = 'Select a user to see their completed activations, or pick a role to see eligible users who have never activated it.';
+            }
+
+            function isStandingAccess(row) { const t = (row.AssignmentType || '').toLowerCase(); if (t.includes('permanent') || t.includes('perm') || t.includes('standing')) return true; const sd = (row.AssignmentStartDate || '').toLowerCase(); const ed = (row.AssignmentEndDate || '').toLowerCase(); return sd === 'permanent' || ed === 'permanent'; }
+            function deriveTypeBadge(row) { if (isStandingAccess(row)) { return { label: 'Perm active', cls: 'perm-badge' }; } const s = (row.AssignmentType || '').toLowerCase(); if (s.includes('eligible') && s.includes('active')) return { label: 'Eligible (Active)', cls: 'elig-badge' }; if (s.includes('eligible')) return { label: 'Eligible', cls: 'elig-badge' }; if (s.includes('active')) return { label: 'Active', cls: 'elig-badge' }; return { label: row.AssignmentType || 'Eligible', cls: 'elig-badge' }; }
+
+            function renderEligibleRoles() {
+                eligibleRolesBody.innerHTML = '';
+                eligibleRolesNote.textContent = '';
+                const upnSel = user.value; const roleSel = role.value; const report = Array.isArray(window.PIM_REPORT) ? window.PIM_REPORT : null;
+                if (!report) { eligibleRolesNote.textContent = 'Administrators report not loaded. Ensure AdministratorsReport-PIM.data.js is present.'; return; }
+                if (upnSel) {
+                    eligTitle.textContent = 'Eligible roles';
+                    eligHint.style.display = '';
+                    const mine = report.filter(r => (r.Principal || '').toLowerCase() === upnSel.toLowerCase());
+                    const eligibleOrStanding = mine.filter(r => (r.AssignmentType || '').toLowerCase().includes('eligible') || isStandingAccess(r));
+                    eligibleOrStanding.sort((a, b) => { const rank = r => isStandingAccess(r) ? 0 : ((r.AssignmentType || '').toLowerCase().includes('eligible') && (r.AssignmentType || '').toLowerCase().includes('active')) ? 1 : 2; const ra = rank(a), rb = rank(b); if (ra !== rb) return ra - rb; return (a.AssignedRole || '').localeCompare(b.AssignedRole || ''); });
+                    let total = 0;
+                    for (const r of eligibleOrStanding) {
+                        total++;
+                        const roleName = r.AssignedRole || '(Unknown)';
+                        const scope = r.AssignedRoleScope || '/';
+                        const { label: typeLabel, cls: badgeCls } = deriveTypeBadge(r);
+                        let lastHtml;
+                        if (isStandingAccess(r)) { lastHtml = `<div class="elig-last" title="Standing access (permanent)">—</div>`; }
+                        else { const last = getLastActivationDate(upnSel, roleName); lastHtml = last ? `<div class="elig-last" title="${last.toISOString()}">${last.toLocaleDateString()}</div>` : `<div class="elig-last"><span class="x-badge" title="Never activated">✖</span></div>`; }
+                        const div = document.createElement('div');
+                        div.className = 'elig-item';
+                        div.innerHTML = `
+          <div>
+            <div>${escapeHtml(roleName)} <span class="pim-badge" title="PIM RBAC role">PIM</span></div>
+            <div class="elig-dim">Scope: ${escapeHtml(scope)}</div>
+          </div>
+          <div><span class="${badgeCls}">${escapeHtml(typeLabel)}</span></div>
+          ${lastHtml}
+        `;
+                        eligibleRolesBody.appendChild(div);
+                    }
+                    for (const p of getPAGArray()) {
+                        const elig = new Set(splitList(p.EligibleGroupMembers).map(s => s.toLowerCase()));
+                        const active = new Set(splitList(p.ActiveGroupMembers).map(s => s.toLowerCase()));
+                        const isElig = elig.has((upnSel || '').toLowerCase());
+                        const isAct = active.has((upnSel || '').toLowerCase());
+                        if (!isElig && !isAct) continue;
+                        total++;
+                        const roleName = p.AssignedRole || '(Unknown)';
+                        const scope = p.PrincipalDisplayName || 'PAG Group';
+                        const typeLabel = (isAct && !isElig) ? 'Perm active' : (isAct ? 'Eligible (Active)' : 'Eligible');
+                        const badgeCls = (isAct && !isElig) ? 'perm-badge' : 'elig-badge';
+                        const div = document.createElement('div');
+                        div.className = 'elig-item';
+                        div.innerHTML = `
+          <div>
+            <div>${escapeHtml(roleName)} <span class="pag-badge" title="Privileged Access Group">PAG</span></div>
+            <div class="elig-dim">Scope: ${escapeHtml(scope)}</div>
+          </div>
+          <div><span class="${badgeCls}">${escapeHtml(typeLabel)}</span></div>
+          <div class="elig-last" title="PAG membership does not include activation timestamps">—</div>
+        `;
+                        eligibleRolesBody.appendChild(div);
+                    }
+                    eligibleRolesNote.textContent = `${total} role${total !== 1 ? 's' : ''} found for ${upnSel}.`;
+                    return;
+                }
+
+                if (roleSel) {
+                    eligTitle.textContent = `Principals for role: ${roleSel}`;
+                    eligHint.style.display = '';
+                    const rowsForRole = report.filter(r => (r.AssignedRole || '') === roleSel);
+                    const eligibleOrStanding = rowsForRole.filter(r => (r.AssignmentType || '').toLowerCase().includes('eligible') || isStandingAccess(r));
+                    if (eligibleOrStanding.length === 0) { eligibleRolesNote.textContent = `No eligible or standing access principals for "${roleSel}".`; return; }
+                    eligibleOrStanding.sort((a, b) => { const rank = r => isStandingAccess(r) ? 0 : ((r.AssignmentType || '').toLowerCase().includes('eligible') && (r.AssignmentType || '').toLowerCase().includes('active')) ? 1 : 2; const ra = rank(a), rb = rank(b); if (ra !== rb) return ra - rb; return (a.Principal || '').localeCompare(b.Principal || ''); });
+                    for (const r of eligibleOrStanding) {
+                        const upn = r.Principal || '';
+                        const name = findDisplayName(upn);
+                        const scope = r.AssignedRoleScope || '/';
+                        const { label: typeLabel, cls: badgeCls } = deriveTypeBadge(r);
+                        let lastHtml;
+                        if (isStandingAccess(r)) { lastHtml = `<div class="elig-last" title="Standing access (permanent)">—</div>`; }
+                        else { const last = getLastActivationDate(upn, roleSel); lastHtml = last ? `<div class="elig-last" title="${last.toISOString()}">${last.toLocaleDateString()}</div>` : `<div class="elig-last"><span class="x-badge" title="Never activated">✖</span></div>`; }
+                        const div = document.createElement('div');
+                        div.className = 'elig-item';
+                        div.innerHTML = `
+          <div>
+            <div><a href="#" class="upn-link" data-upn="${escapeHtml(upn)}">${escapeHtml(upn)}</a>${name ? ` &nbsp;<span class=\"elig-dim\">(${escapeHtml(name)})</span>` : ''} <span class="pim-badge" title="PIM RBAC role">PIM</span></div>
+            <div class="elig-dim">Scope: ${escapeHtml(scope)}</div>
+          </div>
+          <div><span class="${badgeCls}">${escapeHtml(typeLabel)}</span></div>
+          ${lastHtml}
+        `;
+                        eligibleRolesBody.appendChild(div);
+                    }
+                    eligibleRolesNote.textContent = `${eligibleOrStanding.length} principal${eligibleOrStanding.length > 1 ? 's' : ''} found for "${roleSel}".`;
+                    eligibleRolesBody.addEventListener('click', (e) => {
+                        const a = e.target.closest('.upn-link'); if (!a) return; e.preventDefault(); const upn = a.dataset.upn || ''; if (!upn) return; ensureOption(user, upn); user.value = upn; applyFilters(); userSummaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, { once: true });
+                    return;
+                }
+
+                eligTitle.textContent = 'Eligible roles';
+                eligHint.style.display = '';
+                eligibleRolesNote.textContent = 'Select a user or a role to see details here.';
+            }
+
+            function getEligibleForSelectedUser() {
+                const upn = user.value; if (!upn) return [];
+                const report = Array.isArray(window.PIM_REPORT) ? window.PIM_REPORT : [];
+                const arr = report.filter(r => (r.Principal || '').toLowerCase() === upn.toLowerCase() && ((r.AssignmentType || '').toLowerCase().includes('eligible') || isStandingAccess(r)));
+                for (const p of getPAGArray()) {
+                    const elig = new Set(splitList(p.EligibleGroupMembers).map(s => s.toLowerCase()));
+                    const active = new Set(splitList(p.ActiveGroupMembers).map(s => s.toLowerCase()));
+                    const isElig = elig.has((upn || '').toLowerCase());
+                    const isAct = active.has((upn || '').toLowerCase());
+                    if (!isElig && !isAct) continue;
+                    arr.push({ Principal: upn, AssignedRole: p.AssignedRole, AssignedRoleScope: p.PrincipalDisplayName || 'PAG Group', AssignmentType: (isAct && !isElig) ? 'Perm active' : (isAct ? 'Eligible (Active)' : 'Eligible'), _isPag: true });
+                }
+                return arr;
+            }
+
+            function canExportUserSummary() { const upn = user.value; if (!upn) return false; return getEligibleForSelectedUser().length > 0; }
+
+            function exportUserSummaryCsv() {
+                const upn = user.value; if (!upn) return;
+                const eligible = getEligibleForSelectedUser(); if (eligible.length === 0) { showInfo(`No eligible/standing roles found for ${upn} to export.`); return; }
+                const header = ["UserUPN", "Role", "Scope", "AssignmentTypeDisplay", "LastActivated", "NeverActivated", "CompletedActivations"];
+                const lines = [header.join(',')];
+                for (const r of eligible) {
+                    const isPag = r._isPag === true; const roleName = r.AssignedRole || ''; const scope = r.AssignedRoleScope || '';
+                    const displayType = isPag ? (r.AssignmentType || 'Eligible') : deriveTypeBadge(r).label;
+                    let lastStr = ''; let never = ''; let count = 0;
+                    if (isPag) { lastStr = ''; never = ''; count = 0; }
+                    else { const isPerm = isStandingAccess(r); const last = isPerm ? null : getLastActivationDate(upn, roleName); lastStr = last ? last.toISOString().slice(0, 10) : ""; count = isPerm ? 0 : getActivationCount(upn, roleName); never = isPerm ? "—" : (count === 0 ? "Yes" : "No"); }
+                    const vals = [upn, roleName, scope, displayType, lastStr, never, String(count)].map(v => { const s = (v ?? '').toString(); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; });
+                    lines.push(vals.join(','));
+                }
+                const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `PIM_UserSummary_${upn.replace(/[^a-zA-Z0-9._-]/g, '_')}.csv`; a.click(); URL.revokeObjectURL(a.href);
+            }
+
+            // --- Trend drawing with area fill, crosshair, and sticky tooltip
+            let _trendGeom = null; // geometry + points for hit-testing
+            let _trendHover = null; // index under cursor
+            let _trendLock = null;  // locked index (click)
+            const _tip = (function () {
+                const d = document.createElement('div'); d.className = 'trend-tip'; document.body.appendChild(d); return d;
+            })();
+
+            function showTip(x, y, html) { _tip.innerHTML = html; _tip.style.left = x + 'px'; _tip.style.top = y + 'px'; _tip.style.opacity = '1'; }
+            function hideTip() { _tip.style.opacity = '0'; }
+
+            function drawTrend(data, hoverIndex) {
+                const ctx = trendCanvas.getContext('2d');
+                ctx.clearRect(0, 0, trendCanvas.width, trendCanvas.height);
+
+                const dpr = window.devicePixelRatio || 1;
+                const w = trendCanvas.clientWidth, h = trendCanvas.clientHeight;
+                trendCanvas.width = Math.floor(w * dpr);
+                trendCanvas.height = Math.floor(h * dpr);
+                ctx.scale(dpr, dpr);
+
+                // Build daily counts
+                const map = new Map();
+                for (const r of data) { const d = new Date(r.Timestamp); if (!isNaN(d)) { const key = d.toISOString().slice(0, 10); map.set(key, (map.get(key) || 0) + 1); } }
+                const itemsByDate = {};
+                for (const r2 of data) {
+                    const d2 = new Date(r2.Timestamp);
+                    if (!isNaN(d2)) {
+                        const k = d2.toISOString().slice(0, 10);
+                        (itemsByDate[k] ||= []).push(r2);
+                    }
+                }
+                const points = Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => ({ date, count, items: (itemsByDate[date] || []).slice().sort((a, b) => new Date(b.Timestamp) - new Date(a.Timestamp)) }));
+
+                const left = 44, right = w - 14, top = 14, bottom = h - 36;
+                const innerW = right - left, innerH = bottom - top;
+
+                // Axes & theme colors
+                const cs = getComputedStyle(document.documentElement);
+                const lineCol = cs.getPropertyValue('--line').trim();
+                const textCol = cs.getPropertyValue('--muted').trim();
+                const accent = cs.getPropertyValue('--accent').trim();
+                const accent2 = cs.getPropertyValue('--accent-2').trim();
+
+                ctx.strokeStyle = lineCol; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left, bottom); ctx.lineTo(right, bottom); ctx.stroke();
+
+                if (points.length === 0) { ctx.fillStyle = textCol; ctx.fillText('No data for trend', left + 10, Math.max(22, h / 2)); _trendGeom = null; hideTip(); return; }
+
+                const maxY = Math.max(...points.map(p => p.count));
+
+                // Grid + labels
+                ctx.fillStyle = textCol; ctx.font = '12px ui-sans-serif, system-ui';
+                const yTicks = Math.min(5, maxY);
+                for (let i = 0; i <= yTicks; i++) { const val = Math.round(maxY * i / (yTicks || 1)); const yy = bottom - (val / (maxY || 1)) * innerH; ctx.fillText(String(val), 8, yy + 4); ctx.strokeStyle = 'rgba(148,163,184,.25)'; ctx.beginPath(); ctx.moveTo(left, yy); ctx.lineTo(right, yy); ctx.stroke(); }
+                const xLabelIdx = new Set([0, Math.floor(points.length / 2), points.length - 1]);
+                xLabelIdx.forEach(i => { const xx = left + (i / (points.length - 1 || 1)) * innerW; if (points[i]) ctx.fillText(points[i].date, xx - 30, bottom + 18); });
+
+                // Build pixel coords
+                const xs = [], ys = [];
+                points.forEach((p, i) => { const x = left + (i / (points.length - 1 || 1)) * innerW; const y = bottom - (p.count / (maxY || 1)) * innerH; xs.push(x); ys.push(y); });
+
+                // Area fill under the line
+                const grd = ctx.createLinearGradient(0, top, 0, bottom);
+                grd.addColorStop(0, accent + '33'); // ~20% alpha
+                grd.addColorStop(1, accent + '00');
+                ctx.beginPath(); ctx.moveTo(xs[0], bottom); xs.forEach((x, i) => ctx.lineTo(x, ys[i])); ctx.lineTo(xs[xs.length - 1], bottom); ctx.closePath(); ctx.fillStyle = grd; ctx.fill();
+
+                // Line
+                ctx.strokeStyle = accent; ctx.lineWidth = 2.25; ctx.beginPath(); xs.forEach((x, i) => { if (i === 0) ctx.moveTo(x, ys[i]); else ctx.lineTo(x, ys[i]); }); ctx.stroke();
+
+                // Dots
+                ctx.fillStyle = accent2; xs.forEach((x, i) => { ctx.beginPath(); ctx.arc(x, ys[i], 2.75, 0, Math.PI * 2); ctx.fill(); });
+
+                // Save geom for interactions
+                _trendGeom = { left, right, top, bottom, innerW, innerH, xs, ys, points, maxY };
+
+                // Crosshair & tooltip
+                const hi = (hoverIndex ?? _trendLock ?? _trendHover);
+                if (hi != null && xs[hi] != null) {
+                    // vertical crosshair
+                    ctx.strokeStyle = lineCol; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(xs[hi], top); ctx.lineTo(xs[hi], bottom); ctx.stroke();
+                    // highlight dot
+                    ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(xs[hi], ys[hi], 4, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+
+            function nearestIndexFromEvent(evt) {
+                if (!_trendGeom) return null;
+                const rect = trendCanvas.getBoundingClientRect();
+                const x = evt.clientX - rect.left; // CSS pixels
+                // find nearest x in xs
+                let best = null, bestDist = Infinity;
+                _trendGeom.xs.forEach((xx, i) => { const d = Math.abs(xx - x); if (d < bestDist) { best = i; bestDist = d; } });
+                return best;
+            }
+
+            function updateHover(evt) {
+                const idx = nearestIndexFromEvent(evt);
+                _trendHover = idx;
+                drawTrend(filtered, idx);
+                if (idx != null && _trendGeom) {
+                    const p = _trendGeom.points[idx];
+                    let html = `<strong>${p.date}</strong><br><span class="muted">Activations:</span> ${p.count}`;
+                    // Only show detailed list when a specific user is selected
+                    if (user && user.value) {
+                        const list = (p.items || []).slice(0, 6).map(it => {
+                            const dt = it.Timestamp ? new Date(it.Timestamp) : null;
+                            const time = (dt && !isNaN(dt)) ? dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                            const who = (it.Member && it.Member.trim()) ? it.Member : (it.MemberUPN || '');
+                            const role = it.Role || '';
+                            const res = (it.Result || '');
+                            return `${escapeHtml(time)} ${escapeHtml(who)} — ${escapeHtml(role)}${res ? ` <span class=\"muted\">(${escapeHtml(res)})</span>` : ''}`;
+                        });
+                        const more = Math.max(0, (p.items || []).length - 6);
+                        html += (list.length ? `<hr style=\"border:none;border-top:1px solid var(--line);margin:6px 0\">` + list.map(li => `• ${li}`).join('<br>') : '');
+                        html += (more ? `<br><span class=\"muted\">+${more} more…</span>` : '');
+                    }
+                    showTip(evt.clientX, evt.clientY, html);
+                } else { hideTip(); }
+            }
+
+            trendCanvas.addEventListener('mousemove', updateHover);
+            trendCanvas.addEventListener('mouseleave', () => { _trendHover = null; if (_trendLock == null) hideTip(); drawTrend(filtered); });
+            trendCanvas.addEventListener('click', (e) => { const idx = nearestIndexFromEvent(e); _trendLock = (_trendLock === idx ? null : idx); if (_trendLock == null) hideTip(); drawTrend(filtered, idx); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { _trendLock = null; _trendHover = null; hideTip(); drawTrend(filtered); } });
+
+            function exportCsv() {
+                const header = ["Timestamp", "MemberUPN", "Member", "Role", "Justification", "Ticket", "Activity", "Result"];
+                const lines = [header.join(',')];
+                for (const r of filtered) { const row = header.map(h => { const v = (r[h] ?? '').toString(); return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v; }).join(','); lines.push(row); }
+                const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'PIM_Activations_filtered.csv'; a.click(); URL.revokeObjectURL(a.href);
+            }
+
+            function exportXlsx(filename, rows, headers) { if (!window.XLSX) { showInfo('XLSX library not loaded'); return; } const data = [headers, ...rows.map(r => headers.map(h => r[h] ?? ''))]; const ws = XLSX.utils.aoa_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Data'); XLSX.writeFile(wb, filename); }
+            function exportXlsxFiltered() { const headers = ["Timestamp", "MemberUPN", "Member", "Role", "Justification", "Ticket", "Activity", "Result"]; exportXlsx('PIM_Activations_filtered.xlsx', filtered, headers); }
+
+            function initialLoad() {
+                if (Array.isArray(window.PIM_ACTIVATIONS)) { hideBanner(); ingest(normalize(window.PIM_ACTIVATIONS)); }
+                else { showInfo('Data bundles not found. Ensure PIM_Activations.data.js and AdministratorsReport-PIM.data.js are placed beside this page.'); renderTable([]); buildFacets(); renderUserSummary(); renderEligibleRoles(); exportUserSummaryBtn.disabled = !canExportUserSummary(); }
+            }
+            function ingest(data) { rows = data; buildFacets(); applyFilters(); }
+
+            [q, role, user, result, from, to].forEach(el => el.addEventListener('input', applyFilters));
+            exportBtn.addEventListener('click', exportCsv);
+            exportXlsxBtn.addEventListener('click', exportXlsxFiltered);
+            exportUserSummaryBtn.addEventListener('click', exportUserSummaryCsv);
+            function resetView() { q.value = ''; role.value = ''; user.value = ''; result.value = ''; from.value = ''; to.value = ''; hideBanner(); applyFilters(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+            resetBtn.addEventListener('click', resetView);
+            initialLoad();
+
+            // Copy link button: encodes current filters in URL params
+            function buildShareUrl() {
+                const url = new URL(location.href);
+                const params = url.searchParams;
+                params.set('q', q.value || '');
+                params.set('role', role.value || '');
+                params.set('user', user.value || '');
+                params.set('result', result.value || '');
+                params.set('from', from.value || '');
+                params.set('to', to.value || '');
+                // clean empties
+                ['q', 'role', 'user', 'result', 'from', 'to'].forEach(k => { if (!params.get(k)) params.delete(k); });
+                url.search = params.toString();
+                return url.toString();
+            }
+            function copyText(text) {
+                if (navigator.clipboard && window.isSecureContext) { return navigator.clipboard.writeText(text); }
+                const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
+                return Promise.resolve();
+            }
+            if (copyLinkBtn) {
+                copyLinkBtn.addEventListener('click', async () => {
+                    const link = buildShareUrl();
+                    try { await copyText(link); Toastify({ text: 'Link copied', gravity: 'top', position: 'right', duration: 2200 }).showToast(); } catch (_) { showInfo(link); }
+                });
+            }
+
+        })();
+    </script>
+</body>
+
+</html>
