@@ -27,6 +27,8 @@ param(
   [hashtable]$ActivationsArgs = @{}
 )
 
+$start = Get-Date
+
 function Write-Step($msg) { Write-Host ("==> {0}" -f $msg) }
 
 # Build the embedded originals as scriptblocks
@@ -850,3 +852,6 @@ switch ($Run) {
     & $Activations_Script @aa
   }
 }
+
+$elapsed = (Get-Date) - $start
+Write-Host ("Runtime: {0:hh\:mm\:ss\.fff}" -f $elapsed)
